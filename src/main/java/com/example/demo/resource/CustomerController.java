@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
  * @author Wang Yuanhang
  * @date 2020/3/21 1:05 下午
  */
-@RestController("customer")
+@RestController
+@RequestMapping("customer")
 public class CustomerController {
 
     private final CustomerMapper customerMapper;
