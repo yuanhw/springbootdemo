@@ -1,5 +1,7 @@
 package com.example.demo.config;
 
+import com.example.demo.config.security.CustomAuthenticationFilter;
+import com.example.demo.config.security.JdbcUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * DemoWebSecurityConfigurerAdapter
@@ -17,12 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @date 2020/3/21 4:49 下午
  */
 @Configuration
-public class DemoWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+public class DemoWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final JdbcUserDetailsServiceImpl jdbcUserDetailsService;
 
     @Autowired
-    public DemoWebSecurityConfigurerAdapter(JdbcUserDetailsServiceImpl jdbcUserDetailsService) {
+    public DemoWebSecurityConfigurer(JdbcUserDetailsServiceImpl jdbcUserDetailsService) {
         this.jdbcUserDetailsService = jdbcUserDetailsService;
     }
 
@@ -32,7 +35,7 @@ public class DemoWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapt
                 .formLogin()
                     .loginPage("/user/demoLogin")
                     .loginProcessingUrl("/user/doDemoLogin")
-                    .failureUrl("/user/loginError.html")
+                    .failureUrl("/user/loginError")
                     .permitAll()
                 .and().authorizeRequests()
                     .antMatchers("/css/*", "/js/*")
@@ -41,6 +44,8 @@ public class DemoWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapt
                     .authenticated()
                 .and().csrf()
                     .requireCsrfProtectionMatcher(request -> HttpMethod.POST.name().equals(request.getMethod()));
+
+        http.addFilterBefore(new CustomAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

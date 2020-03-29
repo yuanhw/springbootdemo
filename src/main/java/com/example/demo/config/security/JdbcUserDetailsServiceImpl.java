@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.config.security;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

@@ -1,6 +1,6 @@
 package com.example.demo.resource;
 
-import com.example.demo.config.JdbcUserDetailsServiceImpl;
+import com.example.demo.config.security.JdbcUserDetailsServiceImpl;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +55,10 @@ public class UserController {
         User user = jdbcUserDetailsService.getUserByName(authentication.getName());
         model.addAttribute("demoUser", user);
         return "myInfo";
+    }
+
+    @GetMapping("loginError")
+    public String loginErr() {
+        return "loginError";
     }
 }
